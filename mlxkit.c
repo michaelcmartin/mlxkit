@@ -105,7 +105,7 @@ void mlx1_encode(void)
 
 void mlx2_encode(void)
 {
-    unsigned int prgend, pc, ck;
+    unsigned int prgend, pc, ck, ck2;
     prgend = prgstart + prgsize - 1;
     printf("Start address: %04X\n", prgstart);
     printf("End address:   %04X\n\n", prgend);
@@ -113,12 +113,15 @@ void mlx2_encode(void)
     for (pc = prgstart; pc <= prgend; pc += 8) {
         int i;
         ck = (pc - 254 * (pc >> 8)) % 255; /* Yes, %, not & */
+	ck2 = pc;
         printf("%04X",pc);
         for (i = 0; i < 8; ++i) {
             int c = (pc + i > prgend) ? 0 : prgbuffer[pc - prgstart + i];
             ck = ((ck << 1) + c) % 255;
+	    ck2 |= c;
             printf("%c%02X", i ? ' ' : ':', c);
         }
+	if (ck == 0 && ck2 != 0) ck = 255;
         printf(" %02X\n", ck);
     }
 }
