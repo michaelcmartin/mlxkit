@@ -27,10 +27,10 @@
 /* MLX versions 2 and 3 store the program in the $3200-$9FFF region */
 #define MAX_SIZE 0x6e00
 
-unsigned char prgbuffer[MAX_SIZE+1];
-unsigned int prgstart, prgsize;
+static unsigned char prgbuffer[MAX_SIZE+1];
+static unsigned int prgstart, prgsize;
 
-int load_prg(const char *fname)
+static int load_prg(const char *fname)
 {
     FILE *f = fopen(fname, "rb");
     int i, c;
@@ -74,7 +74,7 @@ int load_prg(const char *fname)
     return 1;
 }
 
-void mlx1_encode(void)
+static void mlx1_encode(void)
 {
     unsigned int prgend, pc, ck;
     prgend = prgstart + prgsize - 1;
@@ -103,7 +103,7 @@ void mlx1_encode(void)
     }
 }
 
-void mlx2_encode(void)
+static void mlx2_encode(void)
 {
     unsigned int prgend, pc, ck, ck2;
     prgend = prgstart + prgsize - 1;
@@ -126,7 +126,7 @@ void mlx2_encode(void)
     }
 }
 
-void mlx3_encode(void)
+static void mlx3_encode(void)
 {
     unsigned int prgend, pc, s1, s2, hc, ck;
     prgend = prgstart + prgsize - 1;
@@ -152,7 +152,7 @@ void mlx3_encode(void)
     }
 }
 
-int usage(FILE *f)
+static int usage(FILE *f)
 {
     fprintf(f, "Usage:\n    mlxkit [options] <file.prg>\n");
     fprintf(f, "\nOptions:\n");
@@ -163,7 +163,7 @@ int usage(FILE *f)
     return 1;
 }
 
-void credits(void)
+static void credits(void)
 {
     printf("MLXkit: C64 Binary File Encoder\n");
     printf("Version 1.0, (c) 2026 Michael C. Martin.\n");
