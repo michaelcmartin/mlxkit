@@ -84,11 +84,11 @@ void mlx1_encode(void)
     } else if (prgstart >= 0x800 && prgstart < 0x2000) {
         unsigned int mlx_start_page = (prgend + 255) >> 8;
         printf("Before loading MLX, enter these commands:\n");
-        printf("\n  POKE 44,%d:POKE %d,0:NEW\n\n", mlx_start_page, mlx_start_page << 8);
+        printf("\n  POKE 44,%u:POKE %u,0:NEW\n\n", mlx_start_page, mlx_start_page << 8);
     }
 
-    printf("Start address: %d\n", prgstart);
-    printf("End address:   %d\n\n", prgend);
+    printf("Start address: %u\n", prgstart);
+    printf("End address:   %u\n\n", prgend);
 
     for (pc = prgstart; pc <= prgend; pc += 6) {
         int i;
@@ -97,7 +97,7 @@ void mlx1_encode(void)
         for (i = 0; i < 6; ++i) {
             int c = (pc + i > prgend) ? 0 : prgbuffer[pc - prgstart + i];
             ck += c;
-            printf("%c%03u", i ? ',' : ':', c);
+            printf("%c%03d", i ? ',' : ':', c);
         }
         printf(",%03u\n", ck & 255);
     }
